@@ -1,8 +1,8 @@
-import SignIn from "@/components/ui/header/sign-in";
+import SignIn from "@/components/ui/sign-in";
 
 export default function SignInPage() {
   return (
-    <main>
+    <main className="flex justify-center h-full items-center">
       <SignIn></SignIn>
     </main>
   );
