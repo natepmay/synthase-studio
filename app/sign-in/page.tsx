@@ -1,4 +1,4 @@
-import SignIn from "@/components/ui/sign-in";
+import SignIn from "@/components/sign-in";
 
 export default function SignInPage() {
   return (
