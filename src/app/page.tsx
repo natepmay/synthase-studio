@@ -1,9 +1,34 @@
+"use client";
+
 import Image from "next/image";
+import { authClient } from "@/lib/auth-client";
 
 export default function Home() {
+  const handleCreateUser = async () => {
+    const { data, error } = await authClient.signUp.email(
+      {
+        email: "nathaniel.p.may+test@gmail.com", // user email address
+        password: "abcd8jflswWkdjs", // user password -> min 8 characters by default
+        name: "nater", // user display name
+      },
+      {
+        onRequest: (ctx) => {
+          //show loading
+        },
+        onSuccess: (ctx) => {
+          //redirect to the dashboard or sign in page
+        },
+        onError: (ctx) => {
+          // display the error message
+          alert(ctx.error.message);
+        },
+      }
+    );
+  };
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+        <button onClick={handleCreateUser}>Create User</button>
         <Image
           className="dark:invert"
           src="/next.svg"
