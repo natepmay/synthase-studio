@@ -6,17 +6,17 @@ import { authClient } from "@/lib/auth-client";
 
 export default function Home() {
   const handleCreateUser = async () => {
-    const { data, error } = await authClient.signUp.email(
+    await authClient.signUp.email(
       {
         email: "nathaniel.p.may+test@gmail.com", // user email address
         password: "abcd8jflswWkdjs", // user password -> min 8 characters by default
         name: "nater", // user display name
       },
       {
-        onRequest: (ctx) => {
+        onRequest: () => {
           //show loading
         },
-        onSuccess: (ctx) => {
+        onSuccess: () => {
           //redirect to the dashboard or sign in page
         },
         onError: (ctx) => {
