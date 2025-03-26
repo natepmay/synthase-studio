@@ -2,7 +2,7 @@ import { SignUp } from "@/components/sign-up";
 
 export default function SignUpPage() {
   return (
-    <div>
+    <div className="mt-10 mb-10">
       <SignUp></SignUp>
     </div>
   );
