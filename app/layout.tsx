@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { Header } from "@/components/header/header";
+import { Footer } from "@/components/footer";
 import { Toaster } from "sonner";
 
 // const geistSans = Geist({
@@ -32,6 +33,7 @@ export default function RootLayout({
         <main className="flex-1 flex items-center justify-center">
           {children}
         </main>
+        <Footer></Footer>
         <Toaster richColors position="bottom-center"></Toaster>
       </body>
     </html>
