@@ -1,6 +1,8 @@
 "use client";
 
 import { z } from "zod";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -15,29 +17,24 @@ const formSchema = z.object({
     .max(50, {
       message: "Display name must be 50 characters or fewer.",
     }),
-  role: z.enum(["learner", "teacher"], {
-    message: "You must select an option.",
-  }),
+  // role: z.enum(["learner", "teacher"], {
+  //   message: "You must select an option.",
+  // }),
 });
 
 export default function Settings() {
   const {
     register,
-    handleSubmit,
-    watch,
-    formState: { errors },
+    formState: { isValid, errors },
+    setError,
+    reset,
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       displayName: "",
     },
   });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const { pending } = useFormStatus();
 
   return (
     <div className="w-full max-w-2xl bg-black p-20 rounded-2xl mt-10 mb-10">
@@ -46,7 +43,7 @@ export default function Settings() {
       </h1>
       <hr className="mt-5 mb-5" />
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form>
         <div className="grid gap-2">
           <label
             htmlFor="displayName"
@@ -65,11 +62,14 @@ export default function Settings() {
           <p id="display-desc" className="text-muted-foreground text-sm">
             This is your public display name.
           </p>
+          isValid? {isValid ? "true" : "false"}
           <p className="text-destructive text-sm">
             {errors.displayName?.message}
           </p>
         </div>
-        <Button type="submit">Update</Button>
+        <Button type="submit" disabled={pending}>
+          Update
+        </Button>
       </form>
 
       {/* <Form {...form}>
