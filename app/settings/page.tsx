@@ -34,6 +34,11 @@ export default function Settings() {
     }
     console.log(state);
     if (!!state.errors) {
+      Object.entries(state.errors).forEach(([name, errs]) => {
+        errs.forEach((err) =>
+          setError(name as keyof State["errors"], { message: err })
+        );
+      });
       console.log(state.errors);
     } else {
       alert("Success! " + state.message);
