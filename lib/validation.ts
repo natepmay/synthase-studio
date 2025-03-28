@@ -9,7 +9,7 @@ export const settingsFormSchema = z.object({
     .max(50, {
       message: "Display name must be 50 characters or fewer.",
     }),
-  // role: z.enum(["learner", "teacher"], {
-  //   message: "You must select an option.",
-  // }),
+  role: z.enum(["learner", "teacher"], {
+    message: "You must select an option.",
+  }),
 });

@@ -7,8 +7,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/select";
 import { settingsFormSchema } from "@/lib/validation";
 import { updateSettings, type State } from "@/lib/actions";
+import { ChevronDown } from "lucide-react";
 
 export default function Settings() {
   const {
@@ -82,6 +89,41 @@ export default function Settings() {
             {errors.displayName?.message}
           </p>
         </div>
+
+        <div className="grid gap-2">
+          <label
+            htmlFor="role"
+            data-error={!!errors.role}
+            className="data-[error=true]:text-destructive"
+          >
+            Role
+          </label>
+          <div className="relative">
+            <select
+              id="role"
+              aria-describedby="role-desc"
+              aria-invalid={!!errors.role}
+              className={`flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 appearance-none ${
+                errors.role ? "border-destructive ring-destructive" : ""
+              }`}
+              {...register("role", { required: "Role is required" })}
+            >
+              <option value="" disabled>
+                Select a role
+              </option>
+              <option value="teacher">Teacher</option>
+              <option value="learner">Learner</option>
+            </select>
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+              <ChevronDown />
+            </div>
+          </div>
+          <p id="role-desc" className="text-muted-foreground text-sm">
+            How will you primarily use this app?
+          </p>
+          <p className="text-destructive text-sm">{errors.role?.message}</p>
+        </div>
+
         <Button type="submit" disabled={pending || !isValid}>
           Update
         </Button>
@@ -95,30 +137,6 @@ export default function Settings() {
 
       {/* <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="displayName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Display Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Fill this in" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormItem>
-            <FormLabel>Change Password</FormLabel>
-            <Button variant="outline" onClick={(e) => e.preventDefault()}>
-              Change Password
-            </Button>
-            <FormDescription>A reset link will be sent to you.</FormDescription>
-          </FormItem>
 
           <FormField
             control={form.control}
