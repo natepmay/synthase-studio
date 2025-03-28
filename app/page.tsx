@@ -31,7 +31,7 @@ export default function Home() {
       <Button onClick={handleCreateUser} variant="outline">
         Create User
       </Button>
-      <h1>Here's the content.</h1>
+      <h1>Here is the content.</h1>
     </main>
   );
 }
