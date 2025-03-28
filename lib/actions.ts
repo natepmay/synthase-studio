@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 export type State = {
   errors?: {
     displayName?: string[];
+    role?: string[];
+    leitmotif?: string[];
   };
   message?: string | null;
 };
@@ -14,6 +16,8 @@ export type State = {
 export async function updateSettings(prevState: State, formData: FormData) {
   const validatedFields = settingsFormSchema.safeParse({
     displayName: formData.get("displayName"),
+    role: formData.get("role"),
+    leitmotif: formData.get("leitmotif"),
   });
 
   if (!validatedFields.success) {

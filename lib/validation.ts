@@ -12,4 +12,7 @@ export const settingsFormSchema = z.object({
   role: z.enum(["learner", "teacher"], {
     message: "You must select an option.",
   }),
+  leitmotif: z.enum(["one", "two", "none"], {
+    message: "You must select an option.",
+  }),
 });

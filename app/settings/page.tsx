@@ -29,6 +29,7 @@ export default function Settings() {
     resolver: zodResolver(settingsFormSchema),
     defaultValues: {
       displayName: "",
+      role: undefined,
     },
   });
   const { pending } = useFormStatus();
@@ -67,6 +68,7 @@ export default function Settings() {
           }
         }}
       >
+        {/* Display Name */}
         <div className="grid gap-2">
           <label
             htmlFor="displayName"
@@ -90,6 +92,7 @@ export default function Settings() {
           </p>
         </div>
 
+        {/* Role */}
         <div className="grid gap-2">
           <label
             htmlFor="role"
@@ -106,7 +109,7 @@ export default function Settings() {
               className={`flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 appearance-none ${
                 errors.role ? "border-destructive ring-destructive" : ""
               }`}
-              {...register("role", { required: "Role is required" })}
+              {...register("role")}
             >
               <option value="" disabled>
                 Select a role
@@ -124,6 +127,45 @@ export default function Settings() {
           <p className="text-destructive text-sm">{errors.role?.message}</p>
         </div>
 
+        {/* Leitmotif */}
+        {/* TODO use watch to play the next sound when it's picked from the dropdown */}
+        <div className="grid gap-2">
+          <label
+            htmlFor="leitmotif"
+            data-error={!!errors.leitmotif}
+            className="data-[error=true]:text-destructive"
+          >
+            Leitmotif
+          </label>
+          <div className="relative">
+            <select
+              id="leitmotif"
+              aria-describedby="leitmotif-desc"
+              aria-invalid={!!errors.leitmotif}
+              className={`flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 appearance-none ${
+                errors.leitmotif ? "border-destructive ring-destructive" : ""
+              }`}
+              {...register("leitmotif")}
+            >
+              <option value="" disabled>
+                Select a leitmotif
+              </option>
+              <option value="none">None</option>
+              <option value="one">One</option>
+              <option value="two">Two</option>
+            </select>
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+              <ChevronDown />
+            </div>
+          </div>
+          <p id="leitmotif-desc" className="text-muted-foreground text-sm">
+            A sound that follows you around the app 🤗
+          </p>
+          <p className="text-destructive text-sm">
+            {errors.leitmotif?.message}
+          </p>
+        </div>
+
         <Button type="submit" disabled={pending || !isValid}>
           Update
         </Button>
@@ -134,40 +176,6 @@ export default function Settings() {
       <Button onSubmit={(e) => e.preventDefault()} variant="outline">
         Change Password
       </Button>
-
-      {/* <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-
-          <FormField
-            control={form.control}
-            name="role"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Primary Role</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a role" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="learner">Learner</SelectItem>
-                    <SelectItem value="teacher">Teacher</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>
-                  How will you primarily use this app?
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Update</Button>
-        </form>
-      </Form> */}
     </div>
   );
 }
