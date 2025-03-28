@@ -76,7 +76,7 @@ export default function Settings() {
             {...register("displayName")}
           ></Input>
           <p id="display-desc" className="text-muted-foreground text-sm">
-            This is your public display name.
+            This is how we'll refer to you in the app.
           </p>
           <p className="text-destructive text-sm">
             {errors.displayName?.message}
@@ -86,6 +86,12 @@ export default function Settings() {
           Update
         </Button>
       </form>
+
+      <hr className="mt-5 mb-5" />
+
+      <Button onSubmit={(e) => e.preventDefault()} variant="outline">
+        Change Password
+      </Button>
 
       {/* <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
