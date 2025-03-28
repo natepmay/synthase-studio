@@ -85,7 +85,7 @@ export default function Settings() {
             {...register("displayName")}
           ></Input>
           <p id="display-desc" className="text-muted-foreground text-sm">
-            This is how we'll refer to you in the app.
+            This is how we&apos;ll refer to you in the app.
           </p>
           <p className="text-destructive text-sm">
             {errors.displayName?.message}
