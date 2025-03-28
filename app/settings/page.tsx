@@ -1,26 +1,14 @@
 "use client";
 
 import { z } from "zod";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
-const formSchema = z.object({
-  displayName: z
-    .string()
-    .min(2, {
-      message: "Display name must be at least 2 characters.",
-    })
-    .max(50, {
-      message: "Display name must be 50 characters or fewer.",
-    }),
-  // role: z.enum(["learner", "teacher"], {
-  //   message: "You must select an option.",
-  // }),
-});
+import { settingsFormSchema } from "@/lib/validation";
+import { updateSettings, type State } from "@/lib/actions";
 
 export default function Settings() {
   const {
@@ -28,13 +16,29 @@ export default function Settings() {
     formState: { isValid, errors },
     setError,
     reset,
-  } = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+    handleSubmit,
+  } = useForm<z.infer<typeof settingsFormSchema>>({
+    mode: "onTouched",
+    resolver: zodResolver(settingsFormSchema),
     defaultValues: {
       displayName: "",
     },
   });
   const { pending } = useFormStatus();
+  const initialState: State = { message: null, errors: {} };
+  const [state, formAction] = useActionState(updateSettings, initialState);
+
+  useEffect(() => {
+    if (!state) {
+      return;
+    }
+    console.log(state);
+    if (!!state.errors) {
+      console.log(state.errors);
+    } else {
+      alert("Success! " + state.message);
+    }
+  }, [state, setError, reset]);
 
   return (
     <div className="w-full max-w-2xl bg-black p-20 rounded-2xl mt-10 mb-10">
@@ -43,7 +47,14 @@ export default function Settings() {
       </h1>
       <hr className="mt-5 mb-5" />
 
-      <form>
+      <form
+        action={formAction}
+        onSubmit={(e) => {
+          if (!isValid) {
+            e.preventDefault();
+          }
+        }}
+      >
         <div className="grid gap-2">
           <label
             htmlFor="displayName"
@@ -62,12 +73,11 @@ export default function Settings() {
           <p id="display-desc" className="text-muted-foreground text-sm">
             This is your public display name.
           </p>
-          isValid? {isValid ? "true" : "false"}
           <p className="text-destructive text-sm">
             {errors.displayName?.message}
           </p>
         </div>
-        <Button type="submit" disabled={pending}>
+        <Button type="submit" disabled={pending || !isValid}>
           Update
         </Button>
       </form>
