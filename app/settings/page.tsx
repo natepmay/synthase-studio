@@ -4,22 +4,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
@@ -37,7 +21,12 @@ const formSchema = z.object({
 });
 
 export default function Settings() {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       displayName: "",
@@ -56,7 +45,34 @@ export default function Settings() {
         Profile Settings
       </h1>
       <hr className="mt-5 mb-5" />
-      <Form {...form}>
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="grid gap-2">
+          <label
+            htmlFor="displayName"
+            data-error={!!errors.displayName}
+            className="data-[error=true]:text-destructive"
+          >
+            Display Name
+          </label>
+          <Input
+            id="displayName"
+            placeholder="Fill this in"
+            aria-describedby="display-desc"
+            aria-invalid={!!errors.displayName}
+            {...register("displayName")}
+          ></Input>
+          <p id="display-desc" className="text-muted-foreground text-sm">
+            This is your public display name.
+          </p>
+          <p className="text-destructive text-sm">
+            {errors.displayName?.message}
+          </p>
+        </div>
+        <Button type="submit">Update</Button>
+      </form>
+
+      {/* <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
@@ -112,7 +128,7 @@ export default function Settings() {
           />
           <Button type="submit">Update</Button>
         </form>
-      </Form>
+      </Form> */}
     </div>
   );
 }
