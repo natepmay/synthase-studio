@@ -1,4 +1,4 @@
-import { createAuthClient } from "better-auth/client";
+import { createAuthClient } from "better-auth/react";
 import type { auth } from "./auth.js";
 import { inferAdditionalFields } from "better-auth/client/plugins";
 
