@@ -12,6 +12,15 @@ import { settingsFormSchema } from "@/lib/validation";
 import { updateSettings, type State } from "@/lib/actions";
 import { ChevronDown } from "lucide-react";
 
+function Submit({ isValid }: { isValid: boolean }) {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" disabled={pending || !isValid}>
+      Update
+    </Button>
+  );
+}
+
 export function SettingsForm() {
   const { data: session } = authClient.useSession();
 
@@ -29,7 +38,7 @@ export function SettingsForm() {
       role: undefined,
     },
   });
-  const { pending } = useFormStatus();
+
   const initialState: State = { message: null, errors: {} };
   const [state, formAction] = useActionState(updateSettings, initialState);
 
@@ -46,12 +55,11 @@ export function SettingsForm() {
         );
       });
       console.log(state.errors);
-    } else {
-      alert("Success! " + state.message);
     }
   }, [state, setError, reset]);
 
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     async function loadSession() {
       const { data: session } = await authClient.getSession();
@@ -176,9 +184,7 @@ export function SettingsForm() {
           </p>
         </div>
 
-        <Button type="submit" disabled={pending || !isValid}>
-          Update
-        </Button>
+        <Submit isValid={isValid} />
       </form>
 
       <hr className="mt-5 mb-5" />
