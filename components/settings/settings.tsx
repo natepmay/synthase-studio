@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useState, useContext } from "react";
 import { useFormStatus } from "react-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -10,7 +10,17 @@ import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { settingsFormSchema } from "@/lib/validation";
 import { updateSettings, type State } from "@/lib/actions";
+import { UserContext } from "@/components/providers/UserContext";
 import { ChevronDown } from "lucide-react";
+
+function Submit({ isValid }: { isValid: boolean }) {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" disabled={pending || !isValid}>
+      Update
+    </Button>
+  );
+}
 
 export function SettingsForm() {
   const { data: session } = authClient.useSession();
@@ -29,9 +39,10 @@ export function SettingsForm() {
       role: undefined,
     },
   });
-  const { pending } = useFormStatus();
+
   const initialState: State = { message: null, errors: {} };
   const [state, formAction] = useActionState(updateSettings, initialState);
+  const { refresh } = useContext(UserContext);
 
   useEffect(() => {
     if (!state) {
@@ -46,12 +57,14 @@ export function SettingsForm() {
         );
       });
       console.log(state.errors);
-    } else {
-      alert("Success! " + state.message);
+    } else if (state.message == "success") {
+      console.log("success! Refreshing");
+      refresh();
     }
   }, [state, setError, reset]);
 
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     async function loadSession() {
       const { data: session } = await authClient.getSession();
@@ -176,9 +189,7 @@ export function SettingsForm() {
           </p>
         </div>
 
-        <Button type="submit" disabled={pending || !isValid}>
-          Update
-        </Button>
+        <Submit isValid={isValid} />
       </form>
 
       <hr className="mt-5 mb-5" />

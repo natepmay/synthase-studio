@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { settingsFormSchema } from "./validation";
 import { redirect } from "next/navigation";
+import { updateUser } from "./queries";
 
 export type State = {
   errors?: {
@@ -31,11 +32,11 @@ export async function updateSettings(prevState: State, formData: FormData) {
   const { displayName } = validatedFields.data;
 
   console.log("Successfully received ", displayName);
+  const result = await updateUser({ name: displayName });
+  // could read result.rowCount if want to confirm sucess
 
-  // revalidatePath("/dashboard/invoices");
+  // revalidatePath("/settings");
   // either need to redirect here or return something of the type {errors, message}
   // redirect("/settings");
-  return {
-    message: "You did it.",
-  };
+  return { message: "success" };
 }
