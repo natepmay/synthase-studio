@@ -37,5 +37,6 @@ export async function updateSettings(prevState: State, formData: FormData) {
 
   // revalidatePath("/settings");
   // either need to redirect here or return something of the type {errors, message}
-  redirect("/settings");
+  // redirect("/settings");
+  return { message: "success" };
 }

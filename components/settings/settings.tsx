@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useState, useContext } from "react";
 import { useFormStatus } from "react-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { settingsFormSchema } from "@/lib/validation";
 import { updateSettings, type State } from "@/lib/actions";
+import { UserContext } from "@/components/providers/UserContext";
 import { ChevronDown } from "lucide-react";
 
 function Submit({ isValid }: { isValid: boolean }) {
@@ -41,6 +42,7 @@ export function SettingsForm() {
 
   const initialState: State = { message: null, errors: {} };
   const [state, formAction] = useActionState(updateSettings, initialState);
+  const { refresh } = useContext(UserContext);
 
   useEffect(() => {
     if (!state) {
@@ -55,6 +57,9 @@ export function SettingsForm() {
         );
       });
       console.log(state.errors);
+    } else if (state.message == "success") {
+      console.log("success! Refreshing");
+      refresh();
     }
   }, [state, setError, reset]);
 
