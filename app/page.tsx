@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
+import { sendEmail } from "@/lib/email";
 
 export default function Home() {
   const handleCreateUser = async () => {
@@ -26,11 +26,26 @@ export default function Home() {
       }
     );
   };
+
+  const handleSendEmail = async () => {
+    const now = new Date();
+    const resp = await sendEmail({
+      to: [
+        {
+          email: "natemay.dev@proton.me",
+        },
+      ],
+      textBody: `Sent at ${now.toString()}`,
+      subject: "Test Email",
+    });
+    console.log(resp.body);
+  };
   return (
     <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
       <Button onClick={handleCreateUser} variant="outline">
         Create User
       </Button>
+      <Button onClick={handleSendEmail}>Send Email</Button>
       <h1>Here is the content.</h1>
     </main>
   );
