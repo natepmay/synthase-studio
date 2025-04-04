@@ -26,7 +26,7 @@ interface Email<ClientType> {
 }
 
 /**
- * MailJet API wrapped in a custom class to respect the dependency inversion princple.
+ * MailJet API wrapped in a custom class to respect the dependency inversion principle.
  * If a new email service is used, try to make it implement the same
  * Email<ClientType> interface.
  */
