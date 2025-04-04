@@ -35,7 +35,6 @@ class MailJet implements Email<Client> {
   fromEmail;
   client;
   constructor(fromName?: string, fromEmail?: string) {
-    console.log("Api key", process.env.MJ_APIKEY_PUBLIC);
     const mailjet = MJ.apiConnect(
       process.env.MJ_APIKEY_PUBLIC!,
       process.env.MJ_APIKEY_PRIVATE!
