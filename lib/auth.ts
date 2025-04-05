@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "./db"; // your drizzle instance
 import { user, session, account, verification } from "./auth-schema";
+import { sendEmail } from "./actions/sendEmail";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -15,6 +16,19 @@ export const auth = betterAuth({
       // Send an email to the user with a link to reset their password
       console.log("Logging this for now so eslint doesn't complain");
       console.log(data, request);
+      const resp = await sendEmail({
+        to: [
+          {
+            email: data.user.email,
+            name: data.user.name,
+          },
+        ],
+        templateId: 6876196,
+        variables: {
+          pwResetUrl: data.url,
+        },
+      });
+      console.log("email response: ", resp.body);
     },
   },
 });

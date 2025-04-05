@@ -40,12 +40,22 @@ export default function Home() {
     });
     console.log(resp.body);
   };
+
+  const handleForgetPw = async () => {
+    const { data, error } = await authClient.forgetPassword({
+      email: "natemay.dev@proton.me",
+      redirectTo: "/reset-password",
+    });
+    console.log("data? ", data?.status);
+  };
+
   return (
     <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
       <Button onClick={handleCreateUser} variant="outline">
         Create User
       </Button>
       <Button onClick={handleSendEmail}>Send Email</Button>
+      <Button onClick={handleForgetPw}>Forget Password</Button>
       <h1>Here is the content.</h1>
     </main>
   );

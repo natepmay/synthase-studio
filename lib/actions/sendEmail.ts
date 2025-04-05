@@ -16,6 +16,7 @@ interface SendProps {
   subject?: string;
   textBody?: string;
   htmlBody?: string;
+  templateLanguage?: boolean;
 }
 
 interface Email<ClientType> {
@@ -58,6 +59,7 @@ class MailJet implements Email<Client> {
       Subject: props.subject,
       TextPart: props.textBody,
       HTMLPart: props.htmlBody,
+      TemplateLanguage: props.templateLanguage ?? true,
     };
     const response = this.client
       .post("send", { version: "v3.1" })
