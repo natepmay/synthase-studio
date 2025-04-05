@@ -1,9 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { settingsFormSchema } from "./validation";
+import { settingsFormSchema } from "../validation";
 import { redirect } from "next/navigation";
-import { updateUser } from "./queries";
+import { updateUser } from "../queries";
+import { sendEmail } from "./sendEmail";
 
 export type State = {
   errors?: {
@@ -32,6 +33,11 @@ export async function updateSettings(prevState: State, formData: FormData) {
   const { displayName } = validatedFields.data;
 
   console.log("Successfully received ", displayName);
+  await sendEmail({
+    to: [{ email: "natemay.dev@proton.me" }],
+    subject: "Settings updated",
+    textBody: "You updated your settings",
+  });
   const result = await updateUser({ name: displayName });
   // could read result.rowCount if want to confirm sucess
 

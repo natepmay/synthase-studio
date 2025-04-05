@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
-import { sendEmail } from "@/lib/email";
+import { sendEmail } from "@/lib/actions/sendEmail";
 
 export default function Home() {
   const handleCreateUser = async () => {
