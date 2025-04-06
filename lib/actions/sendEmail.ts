@@ -23,7 +23,7 @@ interface Email<ClientType> {
   fromName: string | undefined;
   fromEmail: string | undefined;
   client: ClientType;
-  send: (props: SendProps) => Promise<Object | Error>;
+  send: (props: SendProps) => Promise<number>;
 }
 
 /**
@@ -47,6 +47,11 @@ class MailJet implements Email<Client> {
       console.log("running the constructor");
     }
   }
+  /**
+   * Send an email via Mailjet Send API v3.1
+   * @param props
+   * @returns status code
+   */
   async send(props: SendProps) {
     console.log("running the send method");
     const processedProps = {
