@@ -16,19 +16,24 @@ export const auth = betterAuth({
       // Send an email to the user with a link to reset their password
       console.log("Logging this for now so eslint doesn't complain");
       console.log(data, request);
-      const resp = await sendEmail({
-        to: [
-          {
-            email: data.user.email,
-            name: data.user.name,
+      try {
+        const resp = await sendEmail({
+          to: [
+            {
+              email: data.user.email,
+              name: data.user.name,
+            },
+          ],
+          templateId: 6876196,
+          variables: {
+            pwResetUrl: data.url,
           },
-        ],
-        templateId: 6876196,
-        variables: {
-          pwResetUrl: data.url,
-        },
-      });
-      console.log("email response code: ", resp);
+        });
+        console.log("email response code: ", resp);
+      } catch (error) {
+        console.error("Failed to send reset password email:", error);
+        // Handle the error as needed, e.g., notify the user or retry
+      }
     },
   },
 });
