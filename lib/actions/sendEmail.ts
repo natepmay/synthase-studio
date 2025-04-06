@@ -43,8 +43,10 @@ class MailJet implements Email<Client> {
     this.fromName = fromName;
     this.fromEmail = fromEmail;
     this.client = mailjet;
+    console.log("running the constructor");
   }
-  send(props: SendProps) {
+  async send(props: SendProps) {
+    console.log("running the send method");
     const processedProps = {
       From: {
         Name: props.from?.name ?? this.fromName,
@@ -61,10 +63,10 @@ class MailJet implements Email<Client> {
       HTMLPart: props.htmlBody,
       TemplateLanguage: props.templateLanguage ?? true,
     };
-    const response = this.client
+    const response = await this.client
       .post("send", { version: "v3.1" })
       .request({ Messages: [processedProps] });
-    return response;
+    return response.response.status;
   }
 }
 
