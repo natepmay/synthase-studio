@@ -43,7 +43,9 @@ class MailJet implements Email<Client> {
     this.fromName = fromName;
     this.fromEmail = fromEmail;
     this.client = mailjet;
-    console.log("running the constructor");
+    if (process.env.NODE_ENV === "development") {
+      console.log("running the constructor");
+    }
   }
   async send(props: SendProps) {
     console.log("running the send method");
