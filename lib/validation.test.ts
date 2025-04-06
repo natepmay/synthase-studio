@@ -11,12 +11,6 @@ test("checks displayName validity", () => {
     nameOnly.safeParse({ displayName: "727c*92 3u49$#@% afed" }).success
   ).toBe(true);
   expect(
-    nameOnly.safeParse({ displayName: "727c*92 3u49$#@% afed" }).success
-  ).toBe(true);
-  expect(
-    nameOnly.safeParse({ displayName: "727c*92 3u49$#@% afed" }).success
-  ).toBe(true);
-  expect(
     nameOnly.safeParse({
       displayName: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     }).success
