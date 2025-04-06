@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { settingsFormSchema } from "@/lib/validation";
-import { updateSettings, type State } from "@/lib/actions";
+import { updateSettings, type State } from "@/lib/actions/updateSettings";
 import { UserContext } from "@/components/providers/UserContext";
 import { ChevronDown } from "lucide-react";
 

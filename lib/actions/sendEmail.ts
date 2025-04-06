@@ -16,13 +16,14 @@ interface SendProps {
   subject?: string;
   textBody?: string;
   htmlBody?: string;
+  templateLanguage?: boolean;
 }
 
 interface Email<ClientType> {
   fromName: string | undefined;
   fromEmail: string | undefined;
   client: ClientType;
-  send: (props: SendProps) => Promise<Object | Error>;
+  send: (props: SendProps) => Promise<number>;
 }
 
 /**
@@ -43,7 +44,12 @@ class MailJet implements Email<Client> {
     this.fromEmail = fromEmail;
     this.client = mailjet;
   }
-  send(props: SendProps) {
+  /**
+   * Send an email via Mailjet Send API v3.1
+   * @param props
+   * @returns status code
+   */
+  async send(props: SendProps) {
     const processedProps = {
       From: {
         Name: props.from?.name ?? this.fromName,
@@ -58,11 +64,12 @@ class MailJet implements Email<Client> {
       Subject: props.subject,
       TextPart: props.textBody,
       HTMLPart: props.htmlBody,
+      TemplateLanguage: props.templateLanguage ?? true,
     };
-    const response = this.client
+    const response = await this.client
       .post("send", { version: "v3.1" })
       .request({ Messages: [processedProps] });
-    return response;
+    return response.response.status;
   }
 }
 
