@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest"
+    "test": "vitest run; pnpm exec playwright test"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",
