@@ -14,8 +14,6 @@ export const auth = betterAuth({
     enabled: true,
     async sendResetPassword(data, request) {
       // Send an email to the user with a link to reset their password
-      console.log("Logging this for now so eslint doesn't complain");
-      console.log(data, request);
       try {
         const resp = await sendEmail({
           to: [
