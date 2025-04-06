@@ -23,7 +23,7 @@ test("checks displayName validity", () => {
   ).toBe(false);
 });
 
-test("checks role validtiy", () => {
+test("checks role validity", () => {
   const roleOnly = settingsFormSchema.pick({ role: true });
   expect(roleOnly.safeParse({ role: "learner" }).success).toBe(true);
   expect(roleOnly.safeParse({ role: "teacher" }).success).toBe(true);
