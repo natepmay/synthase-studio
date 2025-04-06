@@ -28,7 +28,7 @@ export const auth = betterAuth({
           pwResetUrl: data.url,
         },
       });
-      console.log("email response: ", resp.body);
+      console.log("email response code: ", resp);
     },
   },
 });

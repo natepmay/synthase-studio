@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { sendEmail } from "@/lib/actions/sendEmail";
 import {
   Card,
   CardContent,
@@ -167,6 +168,10 @@ export function SignUp() {
                     toast.error(ctx.error.message);
                   },
                   onSuccess: async () => {
+                    sendEmail({
+                      to: [{ email: email, name: `${firstName} ${lastName}` }],
+                      templateId: 6877702,
+                    });
                     router.push("/home");
                   },
                 },
