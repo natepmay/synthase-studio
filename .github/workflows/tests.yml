@@ -20,6 +20,12 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
       - name: Build
+        env:
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
+          BETTER_AUTH_SECRET: ${{secrets.BETTER_AUTH_SECRET}}
+          BETTER_AUTH_URL: ${{secrets.BETTER_AUTH_URL}}
+          MJ_APIKEY_PUBLIC: ${{secrets.MJ_APIKEY_PUBLIC}}
+          MJ_APIKEY_PRIVATE: ${{secrets.MJ_APIKEY_PRIVATE}}
         run: pnpm build
       - name: Run local server
         run: pnpm start &
