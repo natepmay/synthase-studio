@@ -8,9 +8,6 @@ export const user = pgTable("user", {
   image: text("image"),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
-  // custom stuff
-  leitmotif: text("leitmotif"),
-  role: text("role", { enum: ["learner", "teacher"] }),
 });
 
 export const session = pgTable("session", {
@@ -51,4 +48,12 @@ export const verification = pgTable("verification", {
   expiresAt: timestamp("expires_at").notNull(),
   createdAt: timestamp("created_at"),
   updatedAt: timestamp("updated_at"),
+});
+
+export const userSettings = pgTable("user_settings", {
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  leitmotif: text("leitmotif"),
+  role: text("role", { enum: ["learner", "teacher"] }),
 });
