@@ -8,6 +8,9 @@ export const user = pgTable("user", {
   image: text("image"),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
+  // custom stuff
+  leitmotif: text("leitmotif"),
+  role: text("role", { enum: ["learner", "teacher"] }),
 });
 
 export const session = pgTable("session", {
