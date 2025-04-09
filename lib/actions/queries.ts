@@ -50,6 +50,7 @@ export async function getExtendedLoggedInUser() {
   const [result] = await db
     .select()
     .from(user)
+    .where(eq(user.id, session.user.id))
     .leftJoin(userSettings, eq(user.id, userSettings.userId));
   return {
     user: result.user,

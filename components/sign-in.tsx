@@ -17,9 +17,12 @@ import { signIn } from "@/lib/auth-client";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { UserContext } from "./providers/UserContext";
+import { useContext } from "react";
 // import { cn } from "@/lib/utils";
 
 export default function SignIn() {
+  const { refresh } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -87,7 +90,8 @@ export default function SignIn() {
                 { email, password },
                 {
                   onSuccess: () => {
-                    router.push("/home");
+                    refresh();
+                    router.push("/");
                   },
                   onError: (ctx) => {
                     toast.error(ctx.error.message);
