@@ -6,19 +6,36 @@ import { auth } from "../auth";
 import { headers } from "next/headers";
 import { db } from "@/lib/db";
 
-type userType = InferSelectModel<typeof user>;
+type User = InferSelectModel<typeof user>;
+type UserSettings = InferSelectModel<typeof userSettings>;
 
-// TODO will need to udate this to receive both user and userSettings and route accordingly
-export async function updateUser(newUserObj: Partial<userType>) {
+export async function updateUser(newUserObj: Partial<User & UserSettings>) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
   if (!session) throw new Error("Not logged in!");
-  const result = await db
-    .update(user)
-    .set(newUserObj)
-    .where(eq(user.id, session.user.id));
-  return result;
+
+  const nextUser = {} as Record<string, string | boolean | Date | null>;
+  const nextUserSettings = {} as Record<string, string | boolean | Date | null>;
+  Object.entries(newUserObj).forEach(([key, val]) => {
+    if (Object.keys(user).includes(key)) {
+      nextUser[key] = val;
+    } else if (Object.keys(userSettings).includes(key)) {
+      nextUserSettings[key] = val;
+    } else {
+      console.error("Key is not a member of user or userSettings.");
+    }
+  });
+
+  await db.batch([
+    db.update(user).set(nextUser).where(eq(user.id, session.user.id)),
+    db
+      .update(userSettings)
+      .set(nextUserSettings)
+      .where(eq(userSettings.userId, session.user.id)),
+  ]);
+
+  return "success";
 }
 
 export async function getExtendedLoggedInUser() {

@@ -30,7 +30,7 @@ export async function updateSettings(prevState: State, formData: FormData) {
     };
   }
 
-  const { displayName } = validatedFields.data;
+  const { displayName, role, leitmotif } = validatedFields.data;
 
   console.log("Successfully received ", displayName);
   await sendEmail({
@@ -38,7 +38,7 @@ export async function updateSettings(prevState: State, formData: FormData) {
     subject: "Settings updated",
     textBody: "You updated your settings",
   });
-  const result = await updateUser({ name: displayName });
+  const result = await updateUser({ name: displayName, role, leitmotif });
   // could read result.rowCount if want to confirm sucess
 
   // revalidatePath("/settings");
