@@ -42,7 +42,11 @@ export async function getExtendedLoggedInUser() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  if (!session) throw new Error("Not logged in!");
+  if (!session)
+    return {
+      user: null,
+      userSettings: null,
+    };
   const [result] = await db
     .select()
     .from(user)
