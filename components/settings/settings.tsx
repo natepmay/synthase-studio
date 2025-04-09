@@ -64,7 +64,7 @@ export function SettingsForm() {
       const { user, userSettings } = await getExtendedLoggedInUser();
       console.log("USER SETTINGS BABY: ", userSettings);
       reset({
-        displayName: user.name,
+        displayName: user?.name,
         role: userSettings?.role ?? undefined,
         leitmotif: (userSettings?.leitmotif as "one" | "two") ?? undefined,
       });
