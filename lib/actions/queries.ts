@@ -35,3 +35,20 @@ export async function getExtendedLoggedInUser() {
     userSettings: result.user_settings,
   };
 }
+
+export async function initializeUserSettings() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) throw new Error("Not logged in!");
+  // TODO get the user role once it's part of the signup form
+  const result = await db
+    .insert(userSettings)
+    .values({
+      userId: session.user.id,
+      leitmotif: "one",
+      role: "learner",
+    })
+    .onConflictDoNothing();
+  return result.rowCount;
+}
