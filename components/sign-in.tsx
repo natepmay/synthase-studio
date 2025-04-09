@@ -87,7 +87,7 @@ export default function SignIn() {
                 { email, password },
                 {
                   onSuccess: () => {
-                    router.push("/home");
+                    router.push("/");
                   },
                   onError: (ctx) => {
                     toast.error(ctx.error.message);
