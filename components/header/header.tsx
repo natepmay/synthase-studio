@@ -13,9 +13,12 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import Link from "next/link";
+import { signOut } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export function Header() {
-  const { user } = useContext(UserContext);
+  const router = useRouter();
+  const { user, refresh } = useContext(UserContext);
   // TODO think about whether initials maybe should be first and last word rather than first two
   const initials = user?.name
     .split(" ")
@@ -42,7 +45,23 @@ export function Header() {
               Settings
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuItem>Log Out</DropdownMenuItem>
+          <button
+            className="w-full"
+            onClick={() =>
+              signOut({
+                fetchOptions: {
+                  onSuccess: () => {
+                    refresh();
+                    router.push("/");
+                  },
+                },
+              })
+            }
+          >
+            <DropdownMenuItem className="cursor-pointer">
+              Log Out
+            </DropdownMenuItem>
+          </button>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
