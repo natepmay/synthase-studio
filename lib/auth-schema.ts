@@ -52,6 +52,7 @@ export const verification = pgTable("verification", {
 
 export const userSettings = pgTable("user_settings", {
   userId: text("user_id")
+    .primaryKey()
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   leitmotif: text("leitmotif"),

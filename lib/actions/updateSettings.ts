@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { settingsFormSchema } from "../validation";
 import { redirect } from "next/navigation";
-import { updateUser } from "../queries";
+import { updateUser } from "./queries";
 import { sendEmail } from "./sendEmail";
 
 export type State = {

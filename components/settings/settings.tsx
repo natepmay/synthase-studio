@@ -12,6 +12,7 @@ import { settingsFormSchema } from "@/lib/validation";
 import { updateSettings, type State } from "@/lib/actions/updateSettings";
 import { UserContext } from "@/components/providers/UserContext";
 import { ChevronDown } from "lucide-react";
+import { getExtendedLoggedInUser } from "@/lib/actions/queries";
 
 function Submit({ isValid }: { isValid: boolean }) {
   const { pending } = useFormStatus();
@@ -68,6 +69,8 @@ export function SettingsForm() {
   useEffect(() => {
     async function loadSession() {
       const { data: session } = await authClient.getSession();
+      const { user, userSettings } = await getExtendedLoggedInUser();
+      console.log("USER SETTINGS BABY: ", userSettings);
       reset({ displayName: session?.user.name });
       setLoading(false);
     }

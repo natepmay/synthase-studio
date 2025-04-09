@@ -1,17 +1,24 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { authClient } from "@/lib/auth-client";
-import { UserContext, type User } from "./UserContext";
+import { UserContext, type User, type UserSettings } from "./UserContext";
+import { getExtendedLoggedInUser } from "@/lib/actions/queries";
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [key, setKey] = useState(0);
-  const [user, setUser] = useState({} as User | undefined);
+  const [user, setUser] = useState({
+    user: null,
+    userSettings: null,
+  } as {
+    user: User | null;
+    userSettings: UserSettings | null;
+  });
 
   useEffect(() => {
     const getSession = async () => {
-      const { data: session } = await authClient.getSession();
-      setUser(session?.user);
+      const extendedUser = await getExtendedLoggedInUser();
+      console.log(extendedUser.userSettings);
+      setUser(extendedUser);
     };
     getSession();
   }, [key]);
@@ -21,7 +28,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, refresh }} key={key}>
+    <UserContext.Provider
+      value={{ user: user.user, userSettings: user.userSettings, refresh }}
+      key={key}
+    >
       {children}
     </UserContext.Provider>
   );
