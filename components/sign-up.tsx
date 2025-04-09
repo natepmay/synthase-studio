@@ -12,15 +12,17 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Image from "next/image";
 import { Loader2, X } from "lucide-react";
 import { signUp } from "@/lib/auth-client";
 import { initializeUserSettings } from "@/lib/actions/queries";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { UserContext } from "./providers/UserContext";
 
 export function SignUp() {
+  const { refresh } = useContext(UserContext);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -169,6 +171,7 @@ export function SignUp() {
                     toast.error(ctx.error.message);
                   },
                   onSuccess: async () => {
+                    refresh();
                     sendEmail({
                       to: [{ email: email, name: `${firstName} ${lastName}` }],
                       templateId: 6877702,
