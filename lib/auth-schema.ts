@@ -49,3 +49,12 @@ export const verification = pgTable("verification", {
   createdAt: timestamp("created_at"),
   updatedAt: timestamp("updated_at"),
 });
+
+export const userSettings = pgTable("user_settings", {
+  userId: text("user_id")
+    .primaryKey()
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  leitmotif: text("leitmotif"),
+  role: text("role", { enum: ["learner", "teacher"] }),
+});

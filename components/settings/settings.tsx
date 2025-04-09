@@ -7,11 +7,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { authClient } from "@/lib/auth-client";
 import { settingsFormSchema } from "@/lib/validation";
 import { updateSettings, type State } from "@/lib/actions/updateSettings";
 import { UserContext } from "@/components/providers/UserContext";
 import { ChevronDown } from "lucide-react";
+import { getExtendedLoggedInUser } from "@/lib/actions/queries";
 
 function Submit({ isValid }: { isValid: boolean }) {
   const { pending } = useFormStatus();
@@ -23,8 +23,6 @@ function Submit({ isValid }: { isValid: boolean }) {
 }
 
 export function SettingsForm() {
-  const { data: session } = authClient.useSession();
-
   const {
     register,
     formState: { isValid, errors },
@@ -34,10 +32,6 @@ export function SettingsForm() {
   } = useForm<z.infer<typeof settingsFormSchema>>({
     mode: "onTouched",
     resolver: zodResolver(settingsFormSchema),
-    defaultValues: {
-      displayName: session?.user.name,
-      role: undefined,
-    },
   });
 
   const initialState: State = { message: null, errors: {} };
@@ -67,8 +61,13 @@ export function SettingsForm() {
 
   useEffect(() => {
     async function loadSession() {
-      const { data: session } = await authClient.getSession();
-      reset({ displayName: session?.user.name });
+      const { user, userSettings } = await getExtendedLoggedInUser();
+      console.log("USER SETTINGS BABY: ", userSettings);
+      reset({
+        displayName: user.name,
+        role: userSettings?.role ?? undefined,
+        leitmotif: (userSettings?.leitmotif as "one" | "two") ?? undefined,
+      });
       setLoading(false);
     }
     loadSession();

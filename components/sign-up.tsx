@@ -16,6 +16,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Loader2, X } from "lucide-react";
 import { signUp } from "@/lib/auth-client";
+import { initializeUserSettings } from "@/lib/actions/queries";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -172,7 +173,8 @@ export function SignUp() {
                       to: [{ email: email, name: `${firstName} ${lastName}` }],
                       templateId: 6877702,
                     });
-                    router.push("/home");
+                    initializeUserSettings();
+                    router.push("/");
                   },
                 },
               });
