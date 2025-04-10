@@ -1,10 +1,12 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+// import { revalidatePath } from "next/cache";
+// import { redirect } from "next/navigation";
 import { settingsFormSchema } from "../validation";
-import { redirect } from "next/navigation";
 import { updateUser } from "./queries";
 import { sendEmail } from "./sendEmail";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 export type State = {
   errors?: {
@@ -16,6 +18,11 @@ export type State = {
 };
 
 export async function updateSettings(prevState: State, formData: FormData) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) throw new Error("Not logged in!");
+
   const validatedFields = settingsFormSchema.safeParse({
     displayName: formData.get("displayName"),
     role: formData.get("role"),
@@ -34,7 +41,7 @@ export async function updateSettings(prevState: State, formData: FormData) {
 
   console.log("Successfully received ", displayName);
   await sendEmail({
-    to: [{ email: "natemay.dev@proton.me" }],
+    to: [{ email: session.user.email }],
     subject: "Settings updated",
     textBody: "You updated your settings",
   });
