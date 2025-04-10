@@ -11,7 +11,9 @@ export function Header() {
 
   return (
     <header className="h-20 flex justify-between bg-black pr-5 pl-5 items-center">
-      <div>SYNTHASE studio</div>
+      <div>
+        SYNTHASE studio <span className="text-red-500">PRE-RELEASE</span>
+      </div>
       <p>{user ? `User: ${user?.name} ` : "Logged Out "} </p>
       {user ? (
         <Dropdown />
