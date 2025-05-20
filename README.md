@@ -18,6 +18,8 @@ The home for music learning tools from [Synthase](https://synthase.cc), an onlin
 
 ## Development
 
+Copy contents of `.env.template` into a new `.env` and add the environment variables. Make sure the `.env` does not get committed.
+`pnpm install`
 `pnpm dev`
 
 ## Contributions
