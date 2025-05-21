@@ -174,7 +174,7 @@ export function SignUp() {
                     refresh();
                     sendEmail({
                       to: [{ email: email, name: `${firstName} ${lastName}` }],
-                      templateId: 6877702,
+                      templateId: 7006593,
                     });
                     initializeUserSettings();
                     router.push("/");
