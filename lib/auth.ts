@@ -22,7 +22,7 @@ export const auth = betterAuth({
               name: data.user.name,
             },
           ],
-          templateId: 6876196,
+          templateId: 7006603,
           variables: {
             pwResetUrl: data.url,
           },

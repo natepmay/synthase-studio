@@ -73,7 +73,7 @@ class MailJet implements Email<Client> {
   }
 }
 
-const emailClient = new MailJet("Synthase Studio", "test@natemay.dev");
+const emailClient = new MailJet("Synthase Studio", "info@synthase.cc");
 
 export async function sendEmail(props: SendProps) {
   return emailClient.send(props);
